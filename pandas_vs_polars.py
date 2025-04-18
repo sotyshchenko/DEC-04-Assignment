@@ -107,7 +107,7 @@ first_orders = (
     .rename(columns={'SalesDate': 'first_order_date'})
 )
 
-aggregation = pd_aggregation.merge(
+pd_aggregation = pd_aggregation.merge(
     first_orders,
     on = 'CustomerID',
     how = 'left'
@@ -227,7 +227,7 @@ pl_aggregation = pl_sales.group_by('CustomerID').agg([
 q33 = pl_aggregation['total_spent'].quantile(0.33)
 q66 = pl_aggregation['total_spent'].quantile(0.66)
 
-aggregation = pl_aggregation.with_columns([
+pl_aggregation = pl_aggregation.with_columns([
     pl.when(pl.col('total_spent') <= q33).then(pl.lit('bronze'))
       .when(pl.col('total_spent') <= q66).then(pl.lit('silver'))
       .otherwise(pl.lit('gold'))
@@ -246,8 +246,8 @@ last_orders = pl_sales.group_by('CustomerID').agg(
     pl.col('SalesDate').max().alias('last_order_date')
 )
 
-aggregation = (
-    aggregation
+pl_aggregation = (
+    pl_aggregation
     .join(first_orders, on = 'CustomerID', how = 'left')
     .join(last_orders,  on = 'CustomerID', how = 'left')
 )
@@ -280,6 +280,10 @@ favorite_product_name = (
 )
 
 pl_aggregation = pl_aggregation.join(favorite_product_name, on = 'CustomerID', how = 'left')
+
+"""Final output here:"""
+
+pl_aggregation
 
 """Finally, saving the output:"""
 
