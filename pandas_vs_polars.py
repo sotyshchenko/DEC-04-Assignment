@@ -83,8 +83,8 @@ pd_aggregation = (
 
 """For convenience, I also rounded the amounts:"""
 
-pd_aggregation['total_spent'] = round(aggregation['total_spent'], 2)
-pd_aggregation['avg_spent'] = round(aggregation['avg_spent'], 2)
+pd_aggregation['total_spent'] = round(pd_aggregation['total_spent'], 2)
+pd_aggregation['avg_spent'] = round(pd_aggregation['avg_spent'], 2)
 
 """On this step I decided to classify customers into 3 groups: bronze, silver, and gold, according to the amounts they spent:"""
 
